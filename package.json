@@ -45,5 +45,5 @@
     "react-native": "*",
     "react-native-blob-util": "*"
   },
-  "version": "0.10.3"
+  "version": "1.0.0"
 }
