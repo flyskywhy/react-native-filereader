@@ -1,19 +1,49 @@
 {
-  "name": "filereader",
-  "description": "HTML5 FileAPI `FileReader` for Node.js",
-  "url": "http://github.com/node-file-api/FileReader",
+  "name": "react-native-filereader",
+  "description": "HTML5 FileAPI `FileReader` for React Native",
+  "homepage": "https://github.com/flyskywhy/react-native-filereader#readme",
+  "bugs": {
+    "url": "https://github.com/flyskywhy/react-native-filereader/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flyskywhy/react-native-filereader.git"
+  },
   "keywords": [
-    "html5",
-    "jsdom",
-    "file-api",
+    "android",
+    "buffer",
+    "babel-plugin-transform-globals",
     "FileReader",
-    "file-reader",
     "file",
-    "reader"
+    "file-api",
+    "file-reader",
+    "html5",
+    "ios",
+    "path",
+    "react-native",
+    "react-native-blob-util",
+    "react-native-browser-polyfill",
+    "reader",
+    "stream",
+    "uri",
+    "url"
   ],
   "author": "AJ ONeal <coolaj86@gmail.com>",
-  "contributors": [],
-  "dependencies": {},
-  "main": "FileReader.js",
+  "contributors": [
+    {
+      "name": "Li Zheng",
+      "email": "flyskywhy@gmail.com",
+      "url": "https://github.com/flyskywhy"
+    }
+  ],
+  "dependencies": {
+    "@flyskywhy/react-native-browser-polyfill": "1.0.9",
+    "react-native-mime-types": "2.3.0"
+  },
+  "main": "index",
+  "peerDependencies": {
+    "react-native": "*",
+    "react-native-blob-util": "*"
+  },
   "version": "0.10.3"
 }

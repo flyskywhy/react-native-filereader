@@ -6,7 +6,9 @@
 (function () {
   "use strict";
 
-  var fs = require("fs")
+  require ('@flyskywhy/react-native-browser-polyfill');
+  var fs = require('react-native-blob-util').default.fs
+    , mime = require('react-native-mime-types')
     , EventEmitter = require("events").EventEmitter
     ;
 
@@ -66,7 +68,7 @@
   function FileReader() {
     var self = this,
       emitter = new EventEmitter,
-      file;
+      file = {};
 
     self.addEventListener = function (on, callback) {
       emitter.on(on, callback);
@@ -103,15 +105,6 @@
       var stream = new EventEmitter(),
         chunked = self.nodeChunkedEncoding;
 
-      // attempt to make the length computable
-      if (!file.size && chunked && file.path) {
-        fs.stat(file.path, function (err, stat) {
-          file.size = stat.size;
-          file.lastModifiedDate = stat.mtime;
-        });
-      }
-
-
       // The stream exists, do nothing more
       if (file.stream) {
         return;
@@ -142,23 +135,34 @@
       if (file.path) {
         // TODO url
         if (!chunked) {
-          fs.readFile(file.path, function (err, data) {
-            if (err) {
-              stream.emit('error', err);
-            }
-            if (data) {
-              stream.emit('data', data);
-              stream.emit('end');
-            }
+          fs.readFile(file.path, 'ascii').then(data => {
+            stream.emit('data', Buffer.from(data, 'ascii'));
+            stream.emit('end');
+          }, err => {
+            stream.emit('error', err);
           });
 
           file.stream = stream;
           return;
         }
 
-        // TODO don't duplicate this code here,
-        // expose a method in File instead
-        file.stream = fs.createReadStream(file.path);
+        fs.readStream(file.path, 'ascii').then((ifstream) => {
+          ifstream.open();
+          ifstream.onData((chunk) => {
+            // when encoding is `ascii`, chunk will be an array contains numbers
+            // otherwise it will be a string
+            stream.emit('data', Buffer.from(chunk, 'ascii'));
+          });
+          ifstream.onError((err) => {
+            stream.emit('error', err);
+          })
+          ifstream.onEnd(() => {
+            stream.emit('end');
+          })
+        })
+
+        file.stream = stream;
+        return;
       }
     }
 
@@ -198,8 +202,6 @@
         buffers.push(data);
 
         emitter.emit('progress', {
-          // fs.stat will probably complete before this
-          // but possibly it will not, hence the check
           lengthComputable: (!isNaN(file.size)) ? true : false,
           loaded: buffers.dataLength,
           total: file.size
@@ -276,12 +278,9 @@
       });
     }
 
-
-
-    function readFile(_file, format, encoding) {
-      file = _file;
+    function _readFile(file, format, encoding) {
       if (!file || !(file.name || file.data) || !(file.path || file.stream || file.buffer || file.data)) {
-        throw new Error("cannot read as File: " + JSON.stringify(file));
+        throw new Error('react-native-filereader error: cannot read as File: ' + JSON.stringify(file));
       }
       if (0 !== self.readyState) {
         console.log("already loading, request to change format ignored");
@@ -298,6 +297,66 @@
         mapStreamToEmitter(format, encoding);
         mapUserEvents();
       });
+    }
+
+    function readFile(input, format, encoding) {
+      if (!input) {
+        throw new Error('react-native-filereader error, input is: ' + input);
+      }
+
+      if ('string' === typeof input) {
+        file.path = input;
+      } else {
+        // Object.keys(input).forEach(function (k) {
+        //   file[k] = input[k];
+        // });
+        // above will create a new object so that modification on file here will not affect
+        // input as a good lib should do, but since react-native-filereader can not be a
+        // polyfill as described in READEM.md and I still want as simple as possible, I do
+        // not want to `new File()` into `StateLoader.uploadGif()` in
+        // https://github.com/flyskywhy/PixelShapeRN/blob/v1.1.20/src/components/apptoolbox/Apptoolbox.js
+        // and need port https://github.com/node-file-api/File/blob/master/File.js as well,
+        // so I use below to reassign input to file so that I can just add
+        // `import FileReader from 'react-native-filereader'` in
+        // https://github.com/flyskywhy/PixelShapeRN/blob/v1.1.20/src/libs/GifLoader.js
+        // (and thus avoid crash in PixelShapeRN)
+        file = input;
+      }
+
+      if (!file.path) {
+        if (file.url) {
+          file.path = file.url;
+        } else if (file.uri) {
+          file.path = file.uri;
+        }
+      }
+
+      if (file.path) {
+        fs.stat(file.path).then(function(stat) {
+          file.lastModified = stat.lastModified;
+          file.lastModifiedDate = new Date(stat.lastModified);
+          file.name = stat.filename;
+          file.path = stat.path;
+          file.size = stat.size;
+          file.type = mime.lookup(stat.filename);
+
+          _readFile(file, format, encoding);
+        }, function(err) {
+          console.warn('react-native-filereader error, maybe you forget request permission: ' + err.message);
+          return;
+        });
+      } else if (file.name) {
+        if (file.buffer) {
+          file.size = file.buffer.length;
+        } else if (!file.stream) {
+          throw new Error('react-native-filereader error: No input, nor stream, nor buffer.');
+        }
+        file.type = file.type || mime.lookup(file.name);
+
+        _readFile(file, format, encoding);
+      } else {
+        throw new Error('react-native-filereader error: No path, nor name.');
+      }
     }
 
     self.readAsArrayBuffer = function (file) {
