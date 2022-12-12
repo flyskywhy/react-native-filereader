@@ -36,6 +36,7 @@
       "url": "https://github.com/flyskywhy"
     }
   ],
+  "license": "Apache",
   "dependencies": {
     "@flyskywhy/react-native-browser-polyfill": "1.0.9",
     "react-native-mime-types": "2.3.0"
