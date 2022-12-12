@@ -3,7 +3,6 @@ React Native FileReader
 
 [![npm version](http://img.shields.io/npm/v/react-native-filereader.svg?style=flat-square)](https://npmjs.org/package/react-native-filereader "View this project on npm")
 [![npm downloads](http://img.shields.io/npm/dm/react-native-filereader.svg?style=flat-square)](https://npmjs.org/package/react-native-filereader "View this project on npm")
-[![npm licence](http://img.shields.io/npm/l/react-native-filereader.svg?style=flat-square)](https://npmjs.org/package/react-native-filereader "View this project on npm")
 [![Platform](https://img.shields.io/badge/platform-ios%20%7C%20android-989898.svg?style=flat-square)](https://npmjs.org/package/react-native-filereader "View this project on npm")
 
 HTML5 FileAPI `FileReader` for React Native, thus `FileReader.readAsArrayBuffer` can work as well which is not implemented in `react-native/Libraries/Blob/FileReader.js` .
