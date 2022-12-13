@@ -314,11 +314,11 @@
         // input as a good lib should do, but since react-native-filereader can not be a
         // polyfill as described in READEM.md and I still want as simple as possible, I do
         // not want to `new File()` into `StateLoader.uploadGif()` in
-        // https://github.com/flyskywhy/PixelShapeRN/blob/v1.1.20/src/components/apptoolbox/Apptoolbox.js
+        // https://github.com/flyskywhy/PixelShapeRN/blob/v1.1.21/src/components/apptoolbox/Apptoolbox.js
         // and need port https://github.com/node-file-api/File/blob/master/File.js as well,
         // so I use below to reassign input to file so that I can just add
         // `import FileReader from 'react-native-filereader'` in
-        // https://github.com/flyskywhy/PixelShapeRN/blob/v1.1.20/src/libs/GifLoader.js
+        // https://github.com/flyskywhy/PixelShapeRN/blob/v1.1.21/src/libs/GifLoader.js
         // (and thus avoid crash in PixelShapeRN)
         file = input;
       }

@@ -4,14 +4,14 @@ React Native FileReader
 [![npm version](http://img.shields.io/npm/v/react-native-filereader.svg?style=flat-square)](https://npmjs.org/package/react-native-filereader "View this project on npm")
 [![npm downloads](http://img.shields.io/npm/dm/react-native-filereader.svg?style=flat-square)](https://npmjs.org/package/react-native-filereader "View this project on npm")
 [![npm licence](http://img.shields.io/npm/l/react-native-filereader.svg?style=flat-square)](https://npmjs.org/package/react-native-filereader "View this project on npm")
-[![Platform](https://img.shields.io/badge/platform-ios%20%7C%20android-989898.svg?style=flat-square)](https://npmjs.org/package/react-native-filereader "View this project on npm")
+[![Platform](https://img.shields.io/badge/platform-ios%20%7C%20android%20%7C%20web-989898.svg?style=flat-square)](https://npmjs.org/package/react-native-filereader "View this project on npm")
 
 HTML5 FileAPI `FileReader` for React Native, thus `FileReader.readAsArrayBuffer` can work as well which is not implemented in `react-native/Libraries/Blob/FileReader.js` .
 
 See <https://developer.mozilla.org/en-US/docs/Web/API/FileReader>
 
 ## Install
-    npm install react-native-filereader
+    npm install react-native-filereader react-native-blob-util@0.16.3
 
 You need request permission first in your APP, e.g. `android.permission.READ_EXTERNAL_STORAGE` with [react-native-permissions](https://github.com/zoontek/react-native-permissions).
 
