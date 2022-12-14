@@ -332,7 +332,19 @@
       }
 
       if (file.path) {
-        fs.stat(file.path).then(function(stat) {
+        // iOS need this otherwise startsWith "file://" will
+        // `failed to stat path "file:///private/var/mobile/Containers/..."
+        // because it does not exist or it is not a folder` as err.message, ref to
+        // https://stackoverflow.com/a/68825349
+        let path = file.path.replace(/^file:\/\//, '');
+
+        // iOS need this otherwise file name contains spaces will
+        // `failed to stat path ".../some%20(7).gif"
+        // because it does not exist or it is not a folder` as err.message, ref to
+        // https://github.com/RonRadtke/react-native-blob-util/issues/117
+        path = decodeURIComponent(path);
+
+        fs.stat(path).then(function(stat) {
           file.lastModified = stat.lastModified;
           file.lastModifiedDate = new Date(stat.lastModified);
           file.name = stat.filename;
