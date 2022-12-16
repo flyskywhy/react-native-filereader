@@ -344,11 +344,6 @@
         // https://github.com/RonRadtke/react-native-blob-util/issues/117
         path = decodeURIComponent(path);
 
-        // Android need this otherwise startsWith "content://com.android.externalstorage.documents/document/primary:..." will
-        // `failed to stat path "null"
-        // because it does not exist or it is not a folder` as err.message
-        path = path.replace(/^content:\/\/com.android.externalstorage.documents\/document\/primary:/, '/sdcard/');
-
         fs.stat(path).then(function(stat) {
           file.lastModified = stat.lastModified;
           file.lastModifiedDate = new Date(stat.lastModified);

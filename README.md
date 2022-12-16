@@ -91,6 +91,8 @@ fileReader.readAsArrayBuffer('content://com.android.providers.media.documents/do
 ```
 PS: `content://` can be changed to `/storage/` on Android by `fs.stat()` in [react-native-blob-util](https://github.com/RonRadtke/react-native-blob-util).
 
+On Android, sometimes you select a file from `/sdcard` by e.g. [react-native-system-file-browser](https://github.com/LewinJun/react-native-system-file-browser), the `decodeURIComponent(path)` is `content://com.android.externalstorage.documents/document/primary:SOME_DIR/SOME.FILE` and will be `fs.stat()` to `/storage/emulated/0/Android/data/com.YOUR.APP/files/SOME_DIR/SOME.FILE` in `react-native-filereader` thus cause `failed to stat path ".../SOME.FILE" because it does not exist or it is not a folder`, in this situation, you should do `path = decodeURIComponent(path).replace(/^content:\/\/com.android.externalstorage.documents\/document\/primary:/, '/sdcard/')` in your APP.
+
 ## Implemented API
 
 `<File>` below is one of `StringUriPath`, `{path: string}`, `{url: string}`, `{uri: string}`, `{buffer: Buffer}`, `{stream: ReadStream}`
