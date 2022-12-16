@@ -13,7 +13,7 @@ See <https://developer.mozilla.org/en-US/docs/Web/API/FileReader>
 ## Install
     npm install react-native-filereader react-native-blob-util@0.16.3
 
-You need request permission first in your APP, e.g. `android.permission.READ_EXTERNAL_STORAGE` with [react-native-permissions](https://github.com/zoontek/react-native-permissions).
+You need request permission first in your APP, e.g. `('react-native').PermissionsAndroid` on Android ref to [automatically request permission on Android when import file](https://github.com/flyskywhy/PixelShapeRN/commit/16e19f3), or `android.permission.READ_EXTERNAL_STORAGE` with [react-native-permissions](https://github.com/zoontek/react-native-permissions).
 
 ## Usage of `new (require('react-native-filereader'))()`
 
