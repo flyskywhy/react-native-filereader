@@ -38,7 +38,7 @@
   ],
   "license": "Apache",
   "dependencies": {
-    "@flyskywhy/react-native-browser-polyfill": "1.0.9",
+    "@flyskywhy/react-native-browser-polyfill": "1.0.10",
     "react-native-mime-types": "2.3.0"
   },
   "main": "index",
