@@ -11,7 +11,11 @@ HTML5 FileAPI `FileReader` for React Native, thus `FileReader.readAsArrayBuffer`
 See <https://developer.mozilla.org/en-US/docs/Web/API/FileReader>
 
 ## Install
-    npm install react-native-filereader react-native-blob-util@0.16.3
+    npm install react-native-filereader
+
+For RN >= 0.65, run `npm install react-native-blob-util`.
+
+For RN < 0.65, run `npm install react-native-blob-util@0.16.3`, and patch manually to [fix: with react-native-web product build will export 'URIUtil' (reexported as 'URIUtil') was not found](https://github.com/RonRadtke/react-native-blob-util/pull/201/files).
 
 You need request permission first in your APP, e.g. `('react-native').PermissionsAndroid` on Android ref to [automatically request permission on Android when import file](https://github.com/flyskywhy/PixelShapeRN/commit/16e19f3), or `android.permission.READ_EXTERNAL_STORAGE` with [react-native-permissions](https://github.com/zoontek/react-native-permissions).
 
